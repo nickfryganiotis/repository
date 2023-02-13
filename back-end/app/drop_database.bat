@@ -1,0 +1,1 @@
+rm instance/test.db

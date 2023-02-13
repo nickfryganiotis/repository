@@ -7,8 +7,8 @@
 # an object with configuration from your application,
 # but you don't have access to a request context.
 
-from flask import Flask
-from models import db
+from flask import Flask, request
+from models import db, Activity
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -18,13 +18,21 @@ db.init_app(app)
 def index():
     return 'Hello, World!'
 
-@app.route('/create_activity', methods=['GET'])
+@app.route('/create_activity', methods=['POST'])
 def create_activity():
-    db.session.add(db.Activity('Mountain', 'Lorem Ipsum'))
-    db.session.commit()
-    activities = db.Activity.query.all() 
-    return activities
-
+    if request.method=='POST':
+        data = request.json
+        new_activity = Activity(data)   
+        try:
+            db.session.add(new_activity)
+             #print(new_activity) 
+            db.session.commit()
+            #Activity.query.all() 
+            return new_activity.to_dict()
+        except:
+            return "Error"    
+    else:
+        return "Error"
 if __name__ == '__main__':
     with app.app_context():
         # code that needs access to the application context goes here
