@@ -1,13 +1,13 @@
 <template>
-  <SecMenuBtn label="label" />
+  <MenuBtn label="label" />
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
-import SecMenuBtn from "src/components/SecMenuBtn";
+import MenuBtn from "src/components/MenuBtn";
 
 export default defineComponent({
-  components: { SecMenuBtn },
+  components: { MenuBtn },
   setup() {
     return { label: ref("Label") };
   },

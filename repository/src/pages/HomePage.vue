@@ -30,29 +30,14 @@
           class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
         >
           <div class="col-2"></div>
-          <q-card
-            class="rounded-borders col-2"
+          <ActivityCard
+            class="col-2"
             v-for="(img, index) in carousels[n - 1]"
             :key="index"
-          >
-            <img :src="img" />
-
-            <q-card-section>
-              <q-rating
-                v-model="ratingModel"
-                size="2em"
-                :max="5"
-                color="yellow"
-                readonly
-              />
-
-              <div class="q-pa-xs text-caption">317 responses</div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              {{ lorem }}
-            </q-card-section>
-          </q-card>
+            :img="img"
+            :ratingModel="ratingModel"
+            :text="lorem"
+          />
           <div class="col-2"></div>
         </div>
         <div
@@ -79,28 +64,14 @@
         class="q-pt-lg row fit items-center q-gutter-xs q-col-gutter no-wrap"
       >
         <div class="col-2"></div>
-        <q-card
+        <ActivityCard
+          class="col-2"
           v-for="(img, index) in activities.slice((n - 1) * 4, n * 4)"
-          class="rounded-borders col-2"
           :key="index"
-        >
-          <img :src="img" />
-          <q-card-section>
-            <q-rating
-              v-model="ratingModel"
-              size="2em"
-              :max="5"
-              color="yellow"
-              readonly
-            />
-
-            <div class="q-pa-xs text-caption">317 responses</div>
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-            {{ lorem }}
-          </q-card-section>
-        </q-card>
+          :img="img"
+          :ratingModel="ratingModel"
+          :text="lorem"
+        />
         <div class="col-2"></div>
       </div>
       <div
@@ -132,9 +103,10 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-
+import ActivityCard from "src/components/ActivityCard.vue";
 export default defineComponent({
   name: "IndexPage",
+  components: { ActivityCard },
 
   setup() {
     return {

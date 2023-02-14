@@ -4,31 +4,10 @@
       <q-toolbar class="justify-between q-py-sm">
         <q-space />
 
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
-          label="Educardia"
-        />
-
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
-          label="EmoSocio"
-        />
-
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
-          label="EmoSociograms"
+        <MenuBtn
+          v-for="(label, index) in secondaryMenuLabels"
+          :key="index"
+          :label="label"
         />
       </q-toolbar>
       <q-toolbar class="bg-white text-primary justify-between q-py-md">
@@ -43,44 +22,19 @@
 
         <q-space />
 
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
-          label="Home"
-          @click="goToLandingPage"
-        />
+        <MenuBtn label="Home" @click="goToLandingPage" />
 
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
+        <MenuBtn
           label="Create a New activity"
           @click="goToCreateActivityPage"
         />
 
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
+        <MenuBtn
           label="Search for an Activity"
           @click="goToSearchActivityPage"
         />
 
-        <q-btn
-          class="text-body1 text-weight-medium"
-          no-caps
-          stretch
-          flat
-          :ripple="false"
-          label="Contact"
-        />
+        <MenuBtn label="Contact" />
       </q-toolbar>
     </q-header>
 
@@ -95,19 +49,19 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-//import { SecMenuBtn } from "../components/SecMenuBtn";
+import MenuBtn from "../components/MenuBtn";
 import { fabPython } from "@quasar/extras/fontawesome-v6";
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
-    //SecMenuBtn,
+    MenuBtn,
   },
 
   setup() {
     const leftDrawerOpen = ref(false);
-    const label = ref("Educardia");
+    const secondaryMenuLabels = ["Educardia", "EmoSocio", "EmoSociograms"];
     const { push } = useRouter();
     const route = useRoute();
     const goToLandingPage = () => {
@@ -122,7 +76,7 @@ export default defineComponent({
 
     return {
       leftDrawerOpen,
-      label,
+      secondaryMenuLabels,
       fabPython,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -130,7 +84,7 @@ export default defineComponent({
       route,
       goToLandingPage,
       goToSearchActivityPage,
-      goToCreateActivityPage
+      goToCreateActivityPage,
     };
   },
 });
