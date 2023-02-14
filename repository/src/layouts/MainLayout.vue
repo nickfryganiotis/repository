@@ -60,6 +60,7 @@
           flat
           :ripple="false"
           label="Create a New activity"
+          @click="goToCreateActivityPage"
         />
 
         <q-btn
@@ -115,6 +116,9 @@ export default defineComponent({
     const goToSearchActivityPage = () => {
       push("/search_activity");
     };
+    const goToCreateActivityPage = () => {
+      push("/create_activity");
+    };
 
     return {
       leftDrawerOpen,
@@ -126,6 +130,7 @@ export default defineComponent({
       route,
       goToLandingPage,
       goToSearchActivityPage,
+      goToCreateActivityPage
     };
   },
 });

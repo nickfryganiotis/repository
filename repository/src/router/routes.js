@@ -8,6 +8,10 @@ const routes = [
         path: "/search_activity",
         component: () => import("pages/SearchActivity.vue"),
       },
+      {
+        path: "/create_activity",
+        component: () => import("pages/CreateActivity.vue"),
+      },
     ],
   },
 
