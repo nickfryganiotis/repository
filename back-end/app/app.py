@@ -8,9 +8,11 @@
 # but you don't have access to a request context.
 
 from flask import Flask, request
+from flask_cors import CORS
 from models import db, Activity
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db.init_app(app)
 
