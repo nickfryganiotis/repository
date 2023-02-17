@@ -1,7 +1,9 @@
 <template>
-  <div class="row q-py-xl q-px-md">
-    <div class="col-5">
-      <div></div>
+  <div class="q-py-lg row q-pl-sm">
+    <div class="col-4"></div>
+    <div class="col-1"></div>
+    <div class="col-7 text-body1 text-weight-bold q-mb-md">Activities</div>
+    <div class="col-4">
       <q-card flat bordered class="my-card bg-light-blue-1">
         <q-card-section>
           <q-input outlined v-model="ph" placeholder="title" :dense="false" />
@@ -132,22 +134,41 @@
       </q-card>
     </div>
     <div class="col-1"></div>
-    <div class="col text-body1 text-weight-bold">
-      <p>Activities</p>
-      <p>Activities</p>
-      <p>Activities</p>
-      <p>Activities</p>
-      <p>Activities</p>
-      <p>Activities</p>
-      <p>Activities</p>
+    <div class="col-6">
+      <div v-for="n in counter" :key="n">
+        <div class="row fit q-gutter-xs q-col-gutter no-wrap">
+          <ActivityCard
+            class="col-4"
+            v-for="(img, index) in activities.slice((n - 1) * 3, n * 3)"
+            :key="index"
+            :img="img"
+            :ratingModel="ratingModel"
+            :text="lorem"
+          />
+        </div>
+        <div
+          class="q-py-lg row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+        >
+          <q-btn
+            v-for="n in 3"
+            :key="n"
+            class="rounded-borders col-4"
+            label="Short activity description"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import ActivityCard from "src/components/ActivityCard.vue";
 
 export default defineComponent({
+  components: {
+    ActivityCard,
+  },
   setup() {
     return {
       ph: ref(""),
@@ -169,6 +190,28 @@ export default defineComponent({
       }),
       available: ref(null),
       availableOptions: ["English", "Spanish", "Romanian", "Greek"],
+      activities: ref([
+        "https://cdn.quasar.dev/img/mountains.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/mountains.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/mountains.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/mountains.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+      ]),
+      counter: 4,
+      ratingModel: 3,
+      lorem:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     };
   },
 });

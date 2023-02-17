@@ -35,6 +35,19 @@ def create_activity():
             return "Error"    
     else:
         return "Error"
+@app.route('/get_activities', methods=['GET'])
+def get_activities():
+    if request.method=="GET":
+        try:
+            activities = Activity.query.all() 
+            activities_dict = []
+            for activity in activities:
+                activities_dict.append(activity.to_dict())
+            return activities_dict
+        except:
+            return "Error"    
+    else:
+        return "Error"        
 if __name__ == '__main__':
     with app.app_context():
         # code that needs access to the application context goes here

@@ -5,9 +5,11 @@
         <q-space />
 
         <MenuBtn
-          v-for="(label, index) in secondaryMenuLabels"
+          target="_blank"
+          v-for="(item, index) in secondaryMenu"
           :key="index"
-          :label="label"
+          :label="item['label']"
+          :href="item['url']"
         />
       </q-toolbar>
       <q-toolbar class="bg-white text-primary justify-between q-py-md">
@@ -61,7 +63,12 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
-    const secondaryMenuLabels = ["Educardia", "EmoSocio", "EmoSociograms"];
+    const secondaryMenu = [
+      { label: "Educardia", url: "https://educardia.eu/" },
+      { label: "EmoSocio", url: "https://netmode.gitlab.io/emosocio/" },
+      { label: "EmoSociograms", url: "https://emosociograms.com/" },
+    ];
+
     const { push } = useRouter();
     const route = useRoute();
     const goToLandingPage = () => {
@@ -76,7 +83,7 @@ export default defineComponent({
 
     return {
       leftDrawerOpen,
-      secondaryMenuLabels,
+      secondaryMenu,
       fabPython,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;

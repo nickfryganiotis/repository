@@ -49,6 +49,7 @@
             :key="n"
             class="rounded-borders col-2"
             label="Short activity description"
+            @click="goToActivityDescription"
           />
           <div class="col-2"></div>
         </div>
@@ -99,16 +100,42 @@
       ></q-btn>
     </div>
   </q-page>
+  <div>{{ activities_back.total_act[0] }}</div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, reactive, onBeforeMount } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+
 export default defineComponent({
   name: "IndexPage",
   components: { ActivityCard },
 
   setup() {
+    const { push } = useRouter();
+    const route = useRoute();
+    const goToActivityDescription = () => {
+      push("/activity_description");
+    };
+    const activities_back = reactive({
+      carousels: "",
+      total_act: "",
+    });
+    onBeforeMount(() => {
+      axios.get("http://localhost:5000/get_activities").then((resp) => {
+        activities_back.carousels = [
+          resp.data.slice(0, 4),
+          resp.data.slice(4, 8),
+          resp.data.slice(8, 12),
+          resp.data.slice(12, 16),
+        ];
+        activities_back.total_act = resp.data;
+        console.log(activities_back.total_act);
+      });
+    });
+
     return {
       slide: ref(1),
       showMore: ref(false),
@@ -161,6 +188,9 @@ export default defineComponent({
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       ratingModel: ref(3),
+      activities_back,
+      route,
+      goToActivityDescription,
     };
   },
 });
