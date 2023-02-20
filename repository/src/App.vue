@@ -23,6 +23,7 @@ export default defineComponent({
       queryCache: new QueryCache({
         onError: (error, query) => {
           console.debug("Error on Query:", query?.queryKey);
+
           debouncedHandleApiError(error);
         },
       }),
