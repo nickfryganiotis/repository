@@ -30,14 +30,20 @@
           class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
         >
           <div class="col-2"></div>
+          <div v-if="status === 'loading'">Loading...</div>
           <ActivityCard
+            v-else
             class="col-2"
-            v-for="(img, index) in carousels[n - 1]"
+            v-for="(act, index) in Object.values(data).slice(
+              (n - 1) * 4,
+              n * 4
+            )"
             :key="index"
-            :img="img"
+            :img="act['img_url']"
             :ratingModel="ratingModel"
             :text="lorem"
           />
+
           <div class="col-2"></div>
         </div>
         <div
@@ -65,11 +71,13 @@
         class="q-pt-lg row fit items-center q-gutter-xs q-col-gutter no-wrap"
       >
         <div class="col-2"></div>
+        <div v-if="status === 'loading'">Loading...</div>
         <ActivityCard
+          v-else
           class="col-2"
-          v-for="(img, index) in activities.slice((n - 1) * 4, n * 4)"
+          v-for="(act, index) in Object.values(data).slice((n - 1) * 4, n * 4)"
           :key="index"
-          :img="img"
+          :img="act['img_url']"
           :ratingModel="ratingModel"
           :text="lorem"
         />
@@ -95,19 +103,20 @@
         flat
         label="Show more"
         @click="
-          counter = counter * 4 < activities.length ? counter + 1 : counter
+          counter =
+            counter * 4 < Object.values(data).length ? counter + 1 : counter
         "
       ></q-btn>
     </div>
   </q-page>
-  <div>{{ activities_back.total_act[0] }}</div>
 </template>
 
 <script>
-import { defineComponent, ref, reactive, onBeforeMount } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
+import { useQuery } from "vue-query";
 
 export default defineComponent({
   name: "IndexPage",
@@ -123,67 +132,21 @@ export default defineComponent({
       carousels: "",
       total_act: "",
     });
-    onBeforeMount(() => {
-      axios.get("http://localhost:5000/get_activities").then((resp) => {
-        activities_back.carousels = [
-          resp.data.slice(0, 4),
-          resp.data.slice(4, 8),
-          resp.data.slice(8, 12),
-          resp.data.slice(12, 16),
-        ];
-        activities_back.total_act = resp.data;
-        console.log(activities_back.total_act);
-      });
-    });
+
+    const { status, data, error } = useQuery("getActivities", () =>
+      axios
+        .get("http://localhost:5000/get_activities")
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((error) => {
+          return error;
+        })
+    );
 
     return {
       slide: ref(1),
       showMore: ref(false),
-      carousels: ref([
-        [
-          "https://cdn.quasar.dev/img/mountains.jpg",
-          "https://cdn.quasar.dev/img/parallax1.jpg",
-          "https://cdn.quasar.dev/img/mountains.jpg",
-          "https://cdn.quasar.dev/img/parallax1.jpg",
-        ],
-        [
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-        ],
-        [
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-          "https://cdn.quasar.dev/img/parallax2.jpg",
-        ],
-        [
-          "https://cdn.quasar.dev/img/mountains.jpg",
-          "https://cdn.quasar.dev/img/parallax1.jpg",
-          "https://cdn.quasar.dev/img/mountains.jpg",
-          "https://cdn.quasar.dev/img/parallax1.jpg",
-        ],
-      ]),
-
-      activities: ref([
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-      ]),
       counter: ref(1),
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -191,6 +154,9 @@ export default defineComponent({
       activities_back,
       route,
       goToActivityDescription,
+      status,
+      data,
+      error,
     };
   },
 });
