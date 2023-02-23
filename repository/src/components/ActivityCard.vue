@@ -1,7 +1,9 @@
 <template>
   <q-card class="rounded-borders">
-    <img :src="img" />
     <q-card-section>
+      <div class="text-h5">{{ title }}</div>
+    </q-card-section>
+    <q-card-section class="q-pt-none">
       <q-rating
         :model-value="ratingModel"
         size="2em"
@@ -9,10 +11,13 @@
         color="yellow"
         readonly
       />
-      <div class="q-pa-xs text-caption">317 responses</div>
-    </q-card-section>
-    <q-card-section class="q-pt-none">
-      {{ text }}
+      <div class="q-pl-xs q-pt-xs text-caption">
+        {{ `${responses} responses` }}
+      </div>
+      <div class="q-pt-xs">
+        {{ `${target_age_group_left} - ${target_age_group_right} years old` }}
+      </div>
+      <div class="q-pt-xs text-negative">{{ text }}</div>
     </q-card-section>
   </q-card>
 </template>
@@ -24,8 +29,11 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ActivityCard",
   props: {
-    img: { type: String },
+    title: { type: String },
+    target_age_group_left: { type: Number },
+    target_age_group_right: { type: Number },
     ratingModel: { type: Number },
+    responses: { type: Number },
     text: { type: String },
   },
 });

@@ -14,7 +14,7 @@ class Activity(db.Model):
     periodicity = db.Column(db.Integer)
     duration = db.Column(db.Integer)
     presence = db.Column(db.String(100))
-    emoSocio_competencies = db.relationship('EmoSocio_Competencies', backref='emosoc_compet_activity')
+    emosocio_competencies = db.relationship('EmoSocio_competencies', backref='emosoc_compet_activity')
     sub_grouping = db.Column(db.String(100))
     teacher_role = db.Column(db.String(100))
     evaluation = db.Column(db.Text)
@@ -25,15 +25,16 @@ class Activity(db.Model):
     img_url = db.Column(db.Text)
 
     def __init__(self, data):
-        self.title = data['activity_title']     
+        self.activity_title = data['activity_title']     
         if 'learning_objectives' in data:
             self.learning_objectives = data['learning_objectives']
         if 'description' in data:
             self.description = data['description']
-        if 'target_age_left' in data:
-            self.target_age_left = data['target_age_left']
-        if 'target_age_right' in data:
-            self.target_age_right = data['target_age_right']
+        if 'target_age_group_left' in data:
+            print(data["target_age_group_left"])
+            self.target_age_group_left = data['target_age_group_left']
+        if 'target_age_group_right' in data:
+            self.target_age_group_right = data['target_age_group_right']
         if 'periodicity' in data:
             self.periodicity = data['periodicity']
         if 'duration' in data:
@@ -54,11 +55,12 @@ class Activity(db.Model):
 
     def to_dict(self):
         activity = {}
+        activity['id'] = self.id
         activity['activity_title'] = self.activity_title
         activity['learning_objectives'] = self.learning_objectives 
         activity['description'] = self.description 
-        activity['target_age_left'] = self.target_age_left 
-        activity['target_age_right'] = self.target_age_right
+        activity['target_age_group_left'] = self.target_age_group_left 
+        activity['target_age_group_right'] = self.target_age_group_right
         activity['periodicity'] = self.periodicity 
         activity['duration'] = self.duration
         activity['presence'] = self.presence
@@ -77,9 +79,15 @@ class Didactic_strategies(db.Model):
 class EmoSocio_competencies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     emosocio_competency_title = db.Column(db.String(100), nullable=False)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))    
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    def to_dict(self):
+        activity = {}
+        activity['id'] = self.id
+        activity['emosocio_competency_title'] = self.emosocio_competency_title
+        activity['activity_id'] = self.activity_id
+        return activity    
 
-class adapted_to_special_needs(db.Model):
+class Adapted_to_special_needs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     special_need_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
@@ -89,7 +97,7 @@ class Publications(db.Model):
     publication_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
 
-class Language(db.Model):
+class Languages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     language_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))

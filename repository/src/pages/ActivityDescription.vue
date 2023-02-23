@@ -5,7 +5,7 @@
       <q-img :src="activity"></q-img>
     </div>
     <div class="col-2 q-ml-md">
-      <div class="text-h4 text-weight-regular">Mountain</div>
+      <div class="text-h4 text-weight-regular">{{ title }}</div>
       <q-rating
         :model-value="ratingModel"
         size="2em"
@@ -26,6 +26,9 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    title: { type: String },
+  },
   setup() {
     return {
       activity: "https://cdn.quasar.dev/img/mountains.jpg",

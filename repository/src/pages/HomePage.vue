@@ -2,12 +2,13 @@
   <q-page>
     <div class="row q-pt-xl">
       <div class="col-1"></div>
-      <div class="col text-body1 text-weight-regular">
+      <div class="col text-h6 text-weight-regular">
         The most popular activities
       </div>
     </div>
 
     <q-carousel
+      v-if="status === 'success'"
       v-model="slide"
       transition-prev="slide-right"
       transition-next="slide-left"
@@ -17,7 +18,7 @@
       infinite
       padding
       arrows
-      height="500px"
+      height="350px"
       class="shadow-2 q-mt-lg rounded-borders"
     >
       <q-carousel-slide
@@ -27,36 +28,25 @@
         class="column no-wrap"
       >
         <div
-          class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+          class="q-pt-md row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
         >
           <div class="col-2"></div>
-          <div v-if="status === 'loading'">Loading...</div>
+
           <ActivityCard
-            v-else
             class="col-2"
             v-for="(act, index) in Object.values(data).slice(
               (n - 1) * 4,
               n * 4
             )"
+            :title="act['activity_title']"
+            :target_age_group_left="act['target_age_group_left']"
+            :target_age_group_right="act['target_age_group_right']"
             :key="index"
-            :img="act['img_url']"
-            :ratingModel="ratingModel"
-            :text="lorem"
+            :ratingModel="ratingModel[(n - 1) * 4 + index]"
+            :responses="responses[(n - 1) * 4 + index]"
+            :text="act['emosocio_competences'].join(', ')"
           />
 
-          <div class="col-2"></div>
-        </div>
-        <div
-          class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-        >
-          <div class="col-2"></div>
-          <q-btn
-            v-for="n in 4"
-            :key="n"
-            class="rounded-borders col-2"
-            label="Short activity description"
-            @click="goToActivityDescription"
-          />
           <div class="col-2"></div>
         </div>
       </q-carousel-slide>
@@ -64,42 +54,33 @@
 
     <div class="row q-pt-lg">
       <div class="col-1"></div>
-      <div class="col text-body1 text-weight-regular">All activities</div>
+      <div class="col text-h6 text-weight-regular">All activities</div>
     </div>
     <div v-for="n in counter" :key="n">
       <div
-        class="q-pt-lg row fit items-center q-gutter-xs q-col-gutter no-wrap"
+        class="q-pt-xl row fit items-center q-gutter-xs q-col-gutter no-wrap"
       >
         <div class="col-2"></div>
         <div v-if="status === 'loading'">Loading...</div>
         <ActivityCard
-          v-else
+          v-else-if="status === 'success'"
           class="col-2"
           v-for="(act, index) in Object.values(data).slice((n - 1) * 4, n * 4)"
+          :title="act['activity_title']"
+          :target_age_group_left="act['target_age_group_left']"
+          :target_age_group_right="act['target_age_group_right']"
           :key="index"
-          :img="act['img_url']"
-          :ratingModel="ratingModel"
-          :text="lorem"
+          :ratingModel="ratingModel[(n - 1) * 4 + index]"
+          :responses="responses[(n - 1) * 4 + index]"
+          :text="act['emosocio_competences'].join(', ')"
         />
-        <div class="col-2"></div>
-      </div>
-      <div
-        class="q-pt-lg row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-      >
-        <div class="col-2"></div>
-        <q-btn
-          v-for="n in 4"
-          :key="n"
-          class="rounded-borders col-2"
-          label="Short activity description"
-        />
-
         <div class="col-2"></div>
       </div>
     </div>
 
     <div class="row reverse q-pr-lg">
       <q-btn
+        v-if="status === 'success'"
         flat
         label="Show more"
         @click="
@@ -112,7 +93,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
@@ -125,13 +106,9 @@ export default defineComponent({
   setup() {
     const { push } = useRouter();
     const route = useRoute();
-    const goToActivityDescription = () => {
-      push("/activity_description");
+    const goToActivityDescription = (title) => {
+      push({ path: "/activity_description", props: { title: title } });
     };
-    const activities_back = reactive({
-      carousels: "",
-      total_act: "",
-    });
 
     const { status, data, error } = useQuery("getActivities", () =>
       axios
@@ -148,15 +125,16 @@ export default defineComponent({
       slide: ref(1),
       showMore: ref(false),
       counter: ref(1),
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      ratingModel: ref(3),
-      activities_back,
+      ratingModel: ref([3, 1, 3, 2, 1, 4, 3, 2, 1, 3, 3, 2, 1, 3, 2, 2]),
+      responses: ref([
+        317, 102, 317, 205, 102, 404, 317, 205, 102, 317, 317, 205, 102, 317,
+        205, 205,
+      ]),
       route,
       goToActivityDescription,
       status,
-      data,
       error,
+      data,
     };
   },
 });

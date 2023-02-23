@@ -27,16 +27,16 @@
         <MenuBtn label="Home" @click="goToLandingPage" />
 
         <MenuBtn
-          label="Create a New activity"
+          label="Create a new activity"
           @click="goToCreateActivityPage"
         />
 
         <MenuBtn
-          label="Search for an Activity"
+          label="Search for an activity"
           @click="goToSearchActivityPage"
         />
 
-        <MenuBtn label="Contact" />
+        <MenuBtn label="Contact" @click="gotToContactPage" />
       </q-toolbar>
     </q-header>
 
@@ -80,6 +80,9 @@ export default defineComponent({
     const goToCreateActivityPage = () => {
       push("/create_activity");
     };
+    const gotToContactPage = () => {
+      push("/contact_page");
+    };
 
     return {
       leftDrawerOpen,
@@ -92,6 +95,7 @@ export default defineComponent({
       goToLandingPage,
       goToSearchActivityPage,
       goToCreateActivityPage,
+      gotToContactPage,
     };
   },
 });

@@ -2,7 +2,7 @@
   <div class="q-py-lg row q-pl-sm">
     <div class="col-4"></div>
     <div class="col-1"></div>
-    <div class="col-7 text-body1 text-weight-bold q-mb-md">Activities</div>
+    <div class="col-7 text-h5 text-weight-regular q-mb-md">Activities</div>
     <div class="col-4">
       <q-card flat bordered class="my-card bg-light-blue-1">
         <q-card-section>
@@ -136,24 +136,22 @@
     <div class="col-1"></div>
     <div class="col-6">
       <div v-for="n in counter" :key="n">
-        <div class="row fit q-gutter-xs q-col-gutter no-wrap">
+        <div class="q-pb-xl row fit q-gutter-xs q-col-gutter no-wrap">
+          <div v-if="status === 'loading'">Loading...</div>
           <ActivityCard
+            v-else-if="status === 'success'"
             class="col-4"
-            v-for="(img, index) in activities.slice((n - 1) * 3, n * 3)"
+            v-for="(act, index) in Object.values(data).slice(
+              (n - 1) * 3,
+              n * 3
+            )"
+            :title="act['activity_title']"
+            :target_age_group_left="act['target_age_group_left']"
+            :target_age_group_right="act['target_age_group_right']"
             :key="index"
-            :img="img"
-            :ratingModel="ratingModel"
-            :text="lorem"
-          />
-        </div>
-        <div
-          class="q-py-lg row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-        >
-          <q-btn
-            v-for="n in 3"
-            :key="n"
-            class="rounded-borders col-4"
-            label="Short activity description"
+            :ratingModel="ratingModel[(n - 1) * 3 + index]"
+            :responses="responses[(n - 1) * 3 + index]"
+            :text="act['emosocio_competences'].join(', ')"
           />
         </div>
       </div>
@@ -164,12 +162,24 @@
 <script>
 import { defineComponent, ref } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
+import axios from "axios";
+import { useQuery } from "vue-query";
 
 export default defineComponent({
   components: {
     ActivityCard,
   },
   setup() {
+    const { status, data, error } = useQuery("getActivities", () =>
+      axios
+        .get("http://localhost:5000/get_activities")
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((error) => {
+          return error;
+        })
+    );
     return {
       ph: ref(""),
       checkboxes: ref({
@@ -190,28 +200,15 @@ export default defineComponent({
       }),
       available: ref(null),
       availableOptions: ["English", "Spanish", "Romanian", "Greek"],
-      activities: ref([
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/parallax2.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
-        "https://cdn.quasar.dev/img/mountains.jpg",
-        "https://cdn.quasar.dev/img/parallax1.jpg",
+      counter: 6,
+      ratingModel: ref([3, 1, 3, 2, 1, 4, 3, 2, 1, 3, 3, 2, 1, 3, 2, 2]),
+      responses: ref([
+        317, 102, 317, 205, 102, 404, 317, 205, 102, 317, 317, 205, 102, 317,
+        205, 205,
       ]),
-      counter: 4,
-      ratingModel: 3,
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      data,
+      error,
+      status,
     };
   },
 });

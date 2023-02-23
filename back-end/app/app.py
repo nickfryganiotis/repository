@@ -9,7 +9,7 @@
 
 from flask import Flask, request
 from flask_cors import CORS
-from models import db, Activity
+from models import db, Activity, EmoSocio_competencies
 
 app = Flask(__name__)
 CORS(app)
@@ -36,6 +36,27 @@ def create_activity():
             return "Error"    
     else:
         return "Error"
+
+@app.route('/create_emosocio_competence', methods=['POST'])
+def create_emosocio_competence():
+    if request.method=="POST":
+        data = request.json
+        print(data)
+        try:
+          activity=(Activity.query.filter_by(activity_title=data["activity_title"])).first().to_dict()
+          id = activity["id"]
+          print(id)
+          new_emosocio_competency = EmoSocio_competencies(emosocio_competency_title=data["emosocio_competency_title"], activity_id=id)
+          try:
+            db.session.add(new_emosocio_competency)
+            db.session.commit() 
+            return new_emosocio_competency.to_dict()
+          except:
+            return "Error"  
+        except:
+            return "Error"         
+    else:
+        return "Error"    
 @app.route('/get_activities', methods=['GET'])
 def get_activities():
     if request.method=="GET":
@@ -43,7 +64,10 @@ def get_activities():
             activities = Activity.query.all() 
             activities_dict = []
             for activity in activities:
-                activities_dict.append(activity.to_dict())
+                act_to_dict = activity.to_dict()
+                emoSocio_competencies=EmoSocio_competencies.query.filter(EmoSocio_competencies.activity_id==act_to_dict["id"]).all()
+                act_to_dict['emosocio_competences'] = [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]
+                activities_dict.append(act_to_dict)
             return activities_dict
         except:
             return "Error"    
