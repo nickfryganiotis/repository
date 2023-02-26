@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="row reverse q-pr-lg">
+    <div class="row justify-end q-pr-lg q-py-md">
       <q-btn
         v-if="status === 'success'"
         flat
