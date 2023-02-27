@@ -38,13 +38,14 @@
               (n - 1) * 4,
               n * 4
             )"
+            :id="act['id']"
             :title="act['activity_title']"
             :target_age_group_left="act['target_age_group_left']"
             :target_age_group_right="act['target_age_group_right']"
             :key="index"
             :ratingModel="ratingModel[(n - 1) * 4 + index]"
             :responses="responses[(n - 1) * 4 + index]"
-            :text="act['emosocio_competences'].join(', ')"
+            :emosocio_competences="act['emosocio_competences'].join(', ')"
           />
 
           <div class="col-2"></div>
@@ -66,13 +67,14 @@
           v-else-if="status === 'success'"
           class="col-2"
           v-for="(act, index) in Object.values(data).slice((n - 1) * 4, n * 4)"
+          :id="act['id']"
           :title="act['activity_title']"
           :target_age_group_left="act['target_age_group_left']"
           :target_age_group_right="act['target_age_group_right']"
           :key="index"
           :ratingModel="ratingModel[(n - 1) * 4 + index]"
           :responses="responses[(n - 1) * 4 + index]"
-          :text="act['emosocio_competences'].join(', ')"
+          :emosocio_competences="act['emosocio_competences'].join(', ')"
         />
         <div class="col-2"></div>
       </div>

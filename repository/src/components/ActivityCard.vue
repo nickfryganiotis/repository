@@ -1,7 +1,11 @@
 <template>
   <q-card class="rounded-borders">
     <q-card-section>
-      <div class="text-h5">{{ title }}</div>
+      <router-link
+        :to="{ name: 'ActivityDescription', params: { activityId: id } }"
+      >
+        <div class="text-h5">{{ title }}</div>
+      </router-link>
     </q-card-section>
     <q-card-section class="q-pt-none">
       <q-rating
@@ -17,7 +21,7 @@
       <div class="q-pt-xs">
         {{ `${target_age_group_left} - ${target_age_group_right} years old` }}
       </div>
-      <div class="q-pt-xs text-negative">{{ text }}</div>
+      <div class="q-pt-xs text-negative">{{ emosocio_competences }}</div>
     </q-card-section>
   </q-card>
 </template>
@@ -29,12 +33,13 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ActivityCard",
   props: {
+    id: { type: Number },
     title: { type: String },
     target_age_group_left: { type: Number },
     target_age_group_right: { type: Number },
     ratingModel: { type: Number },
     responses: { type: Number },
-    text: { type: String },
+    emosocio_competences: { type: String },
   },
 });
 </script>

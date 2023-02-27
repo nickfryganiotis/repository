@@ -23,16 +23,20 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   props: {
     title: { type: String },
   },
   setup() {
+    const route = useRoute();
+    const acitivityId = computed(() => route.params.acitivityId);
     return {
       activity: "https://cdn.quasar.dev/img/mountains.jpg",
       ratingModel: 3,
+      acitivityId,
     };
   },
 });

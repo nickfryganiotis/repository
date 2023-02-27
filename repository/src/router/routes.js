@@ -13,10 +13,12 @@ const routes = [
       },
       {
         path: "/create_activity",
+        name: "CreateActivity",
         component: () => import("pages/CreateActivity.vue"),
       },
       {
-        path: "/activity_description",
+        path: "/activity_description/:activityId",
+        name: "ActivityDescription",
         component: () => import("pages/ActivityDescription.vue"),
       },
       {

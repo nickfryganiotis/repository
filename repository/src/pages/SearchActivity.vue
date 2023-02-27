@@ -145,13 +145,14 @@
               (n - 1) * 3,
               n * 3
             )"
+            :id="act['id']"
             :title="act['activity_title']"
             :target_age_group_left="act['target_age_group_left']"
             :target_age_group_right="act['target_age_group_right']"
             :key="index"
             :ratingModel="ratingModel[(n - 1) * 3 + index]"
             :responses="responses[(n - 1) * 3 + index]"
-            :text="act['emosocio_competences'].join(', ')"
+            :emosocio_competences="act['emosocio_competences'].join(', ')"
           />
         </div>
       </div>
