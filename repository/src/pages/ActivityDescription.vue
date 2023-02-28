@@ -1,23 +1,107 @@
 <template>
-  <div class="row q-pa-lg" v-if="status === 'success'">
-    <div class="col-2"></div>
+  <div v-if="status === 'success'">
+    <div class="row q-pa-lg">
+      <div class="col-2"></div>
 
-    <div class="col-2 q-ml-md">
-      <div class="text-h4 text-weight-regular">
-        {{ posts["activity_title"] }}
+      <div class="col-5">
+        <div class="text-h3 text-weight-regular">
+          {{ posts["activity_title"] }}
+        </div>
       </div>
-      <q-rating
-        :model-value="ratingModel"
-        size="2em"
-        :max="5"
-        color="yellow"
-        readonly
-      />
-      <div>317 responses</div>
-      <p>
-        Short description bla bla bla bla bla bla bla bla bla bla bla bla bla
-        bla bla bla
-      </p>
+    </div>
+
+    <div class="row q-pa-lg">
+      <div class="col-2"></div>
+      <div class="col-6">
+        <q-card flat bordered>
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Description
+            </div></q-card-section
+          >
+          <q-card-section
+            ><div class="text-h5 text-weight regular">EmoSocio Competences</div>
+            <div class="text-negative q-mt-sm">
+              {{ posts["emosocio_competences"].join(", ") }}
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Periodic Execution
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Duration
+            </div></q-card-section
+          >
+          <q-card-section
+            ><div class="text-h5 text-weight regular">Age target group</div>
+            <div class="q-mt-sm">
+              {{
+                `${posts["target_age_group_left"]} - ${posts["target_age_group_right"]} years old`
+              }}
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Execution
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Teacher's Role
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Suitable for kids with
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Material(s) needed
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Available in
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Prior activity
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Next activity
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Sources
+            </div></q-card-section
+          >
+          <q-card-section>
+            <div class="text-h5 text-weight regular">
+              Notes/Tips
+            </div></q-card-section
+          >
+        </q-card>
+      </div>
+      <div class="col-1"></div>
+      <div class="col">
+        <q-rating
+          :model-value="ratingModel"
+          size="2em"
+          :max="5"
+          color="yellow"
+          readonly
+        />
+        <div>317 responses</div>
+        <p>Short description:</p>
+      </div>
     </div>
   </div>
 </template>

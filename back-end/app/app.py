@@ -57,6 +57,7 @@ def create_emosocio_competence():
             return "Error"         
     else:
         return "Error"    
+
 @app.route('/get_activities', methods=['GET'])
 def get_activities():
     if request.method=="GET":
@@ -72,7 +73,19 @@ def get_activities():
         except:
             return "Error"    
     else:
-        return "Error"        
+        return "Error"
+
+@app.route('/get_activity', methods=['GET'])
+def get_activity():
+    if request.method=="GET":
+        id = request.args.get('activity_id')
+        activity=(Activity.query.filter_by(id=id)).first().to_dict()
+        emoSocio_competencies=EmoSocio_competencies.query.filter(EmoSocio_competencies.activity_id==id).all()
+        activity['emosocio_competences'] =  [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]  
+        return activity 
+    else:
+        return "Error"
+
 if __name__ == '__main__':
     with app.app_context():
         # code that needs access to the application context goes here

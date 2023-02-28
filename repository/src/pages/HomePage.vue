@@ -2,7 +2,7 @@
   <q-page>
     <div class="row q-pt-xl">
       <div class="col-1"></div>
-      <div class="col text-h6 text-weight-regular">
+      <div class="col text-h5 text-weight-regular">
         The most popular activities
       </div>
     </div>
@@ -55,7 +55,7 @@
 
     <div class="row q-pt-lg">
       <div class="col-1"></div>
-      <div class="col text-h6 text-weight-regular">All activities</div>
+      <div class="col text-h5 text-weight-regular">All activities</div>
     </div>
     <div v-for="n in counter" :key="n">
       <div
