@@ -1,11 +1,11 @@
 <template>
-  <div class="row q-pa-lg">
+  <div class="row q-pa-lg" v-if="status === 'success'">
     <div class="col-2"></div>
-    <div class="col-2">
-      <q-img :src="activity"></q-img>
-    </div>
+
     <div class="col-2 q-ml-md">
-      <div class="text-h4 text-weight-regular">{{ title }}</div>
+      <div class="text-h4 text-weight-regular">
+        {{ posts["activity_title"] }}
+      </div>
       <q-rating
         :model-value="ratingModel"
         size="2em"
@@ -23,20 +23,42 @@
 </template>
 
 <script>
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
+import axios from "axios";
+import { useQuery } from "vue-query";
 
 export default defineComponent({
-  props: {
-    title: { type: String },
-  },
   setup() {
+    //const activityId = computed(() => route.params.activityId);
     const route = useRoute();
-    const acitivityId = computed(() => route.params.acitivityId);
+    const {
+      status,
+      data: posts = [],
+      error,
+    } = useQuery("getActivity", async () => {
+      //act_id = route.params.activityId;
+      //console.log(act_id);
+
+      const resp = await axios.get("http://localhost:5000/get_activity", {
+        params: { activity_id: route.params.activityId },
+      });
+      console.log(resp);
+      return resp.data;
+      //.then((resp) => {
+      //        return resp.data;
+      //    })
+      //  .catch((error) => {
+      //  return error;
+      //});
+    });
+
     return {
-      activity: "https://cdn.quasar.dev/img/mountains.jpg",
       ratingModel: 3,
-      acitivityId,
+      //activityId,
+      status,
+      posts,
+      error,
     };
   },
 });
