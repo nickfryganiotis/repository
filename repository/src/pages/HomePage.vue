@@ -34,17 +34,16 @@
 
           <ActivityCard
             class="col-2"
-            v-for="(act, index) in Object.values(data).slice(
-              (n - 1) * 4,
-              n * 4
-            )"
+            v-for="(act, index) in getIndices(ratingModel)
+              .slice((n - 1) * 4, n * 4)
+              .map((indx) => Object.values(data)[indx])"
             :id="act['id']"
             :title="act['activity_title']"
             :target_age_group_left="act['target_age_group_left']"
             :target_age_group_right="act['target_age_group_right']"
             :key="index"
-            :ratingModel="ratingModel[(n - 1) * 4 + index]"
-            :responses="responses[(n - 1) * 4 + index]"
+            :ratingModel="ratingModel[act['id'] - 1]"
+            :responses="responses[act['id'] - 1]"
             :emosocio_competences="act['emosocio_competences'].join(', ')"
           />
 
@@ -112,6 +111,18 @@ export default defineComponent({
       push({ path: "/activity_description", props: { title: title } });
     };
 
+    function getIndices(ratingModel) {
+      let indices = [...Array(ratingModel.length).keys()];
+      indices.sort(function (u, v) {
+        return ratingModel[u] > ratingModel[v]
+          ? -1
+          : ratingModel[u] < ratingModel[v]
+          ? 1
+          : 0;
+      });
+      return indices;
+    }
+
     const { status, data, error } = useQuery("getActivities", () =>
       axios
         .get("http://localhost:5000/get_activities")
@@ -127,11 +138,12 @@ export default defineComponent({
       slide: ref(1),
       showMore: ref(false),
       counter: ref(1),
-      ratingModel: ref([3, 1, 3, 2, 1, 4, 3, 2, 1, 3, 3, 2, 1, 3, 2, 2]),
+      ratingModel: ref([2, 1, 2, 2, 1, 4, 3, 2, 1, 3, 3, 2, 1, 3, 2, 2]),
       responses: ref([
-        317, 102, 317, 205, 102, 404, 317, 205, 102, 317, 317, 205, 102, 317,
+        205, 102, 205, 205, 102, 404, 317, 205, 102, 317, 317, 205, 102, 317,
         205, 205,
       ]),
+      getIndices,
       route,
       goToActivityDescription,
       status,
