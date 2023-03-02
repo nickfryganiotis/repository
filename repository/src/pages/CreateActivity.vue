@@ -400,7 +400,7 @@
     <q-btn v-if="page < 6" label="Next" color="primary" @click="page++" />
     <q-btn
       v-else-if="page == 6"
-      label="Subimt"
+      label="Submit"
       color="primary"
       @click="page++"
     />
