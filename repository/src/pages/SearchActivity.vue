@@ -152,7 +152,7 @@
             :key="index"
             :ratingModel="ratingModel[(n - 1) * 3 + index]"
             :responses="responses[(n - 1) * 3 + index]"
-            :emosocio_competences="act['emosocio_competences'].join(', ')"
+            :emosocio_competences="act['emosocio_competences']"
           />
         </div>
       </div>

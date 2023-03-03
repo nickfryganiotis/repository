@@ -41,10 +41,10 @@
             :title="act['activity_title']"
             :target_age_group_left="act['target_age_group_left']"
             :target_age_group_right="act['target_age_group_right']"
-            :key="index"
             :ratingModel="ratingModel[act['id'] - 1]"
             :responses="responses[act['id'] - 1]"
-            :emosocio_competences="act['emosocio_competences'].join(', ')"
+            :emosocio_competences="act['emosocio_competences']"
+            :key="index"
           />
 
           <div class="col-2"></div>
@@ -73,16 +73,19 @@
           :key="index"
           :ratingModel="ratingModel[(n - 1) * 4 + index]"
           :responses="responses[(n - 1) * 4 + index]"
-          :emosocio_competences="act['emosocio_competences'].join(', ')"
+          :emosocio_competences="act['emosocio_competences']"
         />
         <div class="col-2"></div>
       </div>
     </div>
 
-    <div class="row justify-end q-pr-lg q-py-md">
+    <div class="row justify-center q-pr-lg q-py-md">
       <q-btn
+        rounded
+        push
         v-if="status === 'success'"
-        flat
+        color="primary"
+        icon="more_horiz"
         label="Show more"
         @click="
           counter =
@@ -94,7 +97,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";

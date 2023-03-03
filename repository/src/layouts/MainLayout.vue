@@ -12,7 +12,9 @@
           :href="item['url']"
         />
       </q-toolbar>
-      <q-toolbar class="bg-white text-primary justify-between q-py-md">
+      <q-toolbar
+        class="row bg-white text-primary justify-between shadow-4 q-py-sm"
+      >
         <div class="row cursor-pointer" @click="goToLandingPage">
           <q-avatar rounded>
             <img src="../assets/Transparent-Logo-1.webp" alt="logo" />
@@ -35,8 +37,6 @@
           label="Search for an activity"
           @click="goToSearchActivityPage"
         />
-
-        <MenuBtn label="Contact" @click="gotToContactPage" />
       </q-toolbar>
     </q-header>
 
@@ -80,9 +80,6 @@ export default defineComponent({
     const goToCreateActivityPage = () => {
       push("/create_activity");
     };
-    const gotToContactPage = () => {
-      push("/contact_page");
-    };
 
     return {
       leftDrawerOpen,
@@ -95,7 +92,6 @@ export default defineComponent({
       goToLandingPage,
       goToSearchActivityPage,
       goToCreateActivityPage,
-      gotToContactPage,
     };
   },
 });
