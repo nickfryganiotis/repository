@@ -1,40 +1,34 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from datetime import datetime
 
 db = SQLAlchemy()
 
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    activity_title = db.Column(db.String(100), nullable=False)
-    learning_objectives = db.Column(db.String(500))
-    didactic_strategies = db.relationship('Didactic_strategies', backref='didact_activity')
-    description = db.Column(db.Text)
-    target_age_group_left = db.Column(db.Integer)
-    target_age_group_right = db.Column(db.Integer)
-    periodicity = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    min_age = db.Column(db.Integer)
+    max_age = db.Column(db.Integer)
+    periodicity = db.Column(db.String(255))
     duration = db.Column(db.Integer)
-    presence = db.Column(db.String(100))
-    emosocio_competencies = db.relationship('EmoSocio_competencies', backref='emosoc_compet_activity')
-    sub_grouping = db.Column(db.String(100))
-    teacher_role = db.Column(db.String(100))
-    evaluation = db.Column(db.Text)
-    adapted_to_special_needs = db.relationship('Adapted_to_special_needs', backref='sp_needs_activity')
-    publications = db.relationship('Publications', backref='publication_activity')
-    material_description = db.Column(db.Text)
-    languages = db.relationship('Languages', backref='lang_activity')
-    img_url = db.Column(db.Text)
+    presence = db.Column(db.String(255))
+    sub_grouping = db.Column(db.Integer)
+    teacher_role = db.Column(db.String(255))
+    source = db.Column(db.String(255))
+    source_type = db.Column(db.String(255))
+    apriory = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    posteriory = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    #__table_args__ = (db.ForeignKeyConstraint([apriory], ['activity.id']),
+    #                  db.ForeignKeyConstraint([posteriory], ['activity.id']))
+    activity_apriory = db.relationship('Activity', foreign_keys = [apriory], remote_side = [id], backref='apriori_activity')
+    activity_posteriory = db.relationship('Activity', foreign_keys = [posteriory], remote_side = [id], backref= 'posteriory_activity')
+    activity_translation = db.relationship('Activity_translation', backref='translation_activity')
+    activity_didactic_strategy = db.relationship('Activity_didactic_strategy', backref='didactic_activity')
 
     def __init__(self, data):
-        self.activity_title = data['activity_title']     
-        if 'learning_objectives' in data:
-            self.learning_objectives = data['learning_objectives']
-        if 'description' in data:
-            self.description = data['description']
-        if 'target_age_group_left' in data:
-            print(data["target_age_group_left"])
-            self.target_age_group_left = data['target_age_group_left']
-        if 'target_age_group_right' in data:
-            self.target_age_group_right = data['target_age_group_right']
+        if 'min_age' in data:
+            self.min_age = data['min_age']
+        if 'max_age' in data:
+            self.max_age = data['max_age']
         if 'periodicity' in data:
             self.periodicity = data['periodicity']
         if 'duration' in data:
@@ -45,59 +39,105 @@ class Activity(db.Model):
             self.sub_grouping = data['sub_grouping']
         if 'teacher_role' in data:
             self.teacher_role = data['teacher_role']
-        if 'evaluation' in data:
-            self.evaluation = data['evaluation']
-        if 'material_description' in data:
-            self.material_description = data['material_description']
-        if 'img_url' in data:
-            self.img_url = data['img_url']
-
+        if 'source' in data:
+            self.source = data['source']
+        if 'source_type' in data:
+            self.source_type = data['source_type']
+        if 'apriory' in data:
+            self.apriory = data['apriori']
+        if 'posteriory' in data:
+            self.posteriory = data['posteriory']
 
     def to_dict(self):
         activity = {}
         activity['id'] = self.id
-        activity['activity_title'] = self.activity_title
-        activity['learning_objectives'] = self.learning_objectives 
-        activity['description'] = self.description 
-        activity['target_age_group_left'] = self.target_age_group_left 
-        activity['target_age_group_right'] = self.target_age_group_right
+        activity['created_at'] = self.created_at
+        activity['min_age'] = self.min_age 
+        activity['max_age'] = self.max_age
         activity['periodicity'] = self.periodicity 
         activity['duration'] = self.duration
         activity['presence'] = self.presence
         activity['sub_grouping'] = self.sub_grouping
         activity['teacher_role'] = self.teacher_role
-        activity['evaluation'] = self.evaluation 
-        activity['material_description'] = self.material_description 
-        activity['img_url'] = self.img_url
+        activity['source'] = self.source
+        activity['source_type'] = self.source_type
+        activity['apriory'] = self.apriory
+        activity['posteriory'] = self.posteriory
+
         return activity
 
-class Didactic_strategies(db.Model):
+class Activity_translation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    didactic_strategy_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    language_code = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    learning_objectives = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+    evaluation = db.Column(db.String(255))
+    material = db.Column(db.String(255))
 
-class EmoSocio_competencies(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    emosocio_competency_title = db.Column(db.String(100), nullable=False)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    def __init__(self, data):
+        if 'language_code' in data:
+            self.language_code = data['language_code']
+        if 'title' in data:
+            self.title = data['title']
+        if 'learning_objectives' in data:
+            self.learning_objectives = data['learning_objectives']
+        if 'description' in data:
+            self.description = data['description']
+        if 'evaluation' in data:
+            self.evaluation = data['evaluation']
+        if 'material' in data:
+            self.material = data['material']
+    
     def to_dict(self):
-        activity = {}
-        activity['id'] = self.id
-        activity['emosocio_competency_title'] = self.emosocio_competency_title
-        activity['activity_id'] = self.activity_id
-        return activity    
+        activity_translation = {}
+        activity_translation['id'] = self.id
+        activity_translation['activity_id'] = self.activity_id
+        activity_translation['language_code'] = self.language_code
+        activity_translation['title'] = self.title
+        activity_translation['learning_objectives'] = self.learning_objectives
+        activity_translation['description'] = self.description
+        activity_translation['evaluation'] = self.evaluation
+        activity_translation['material'] = self.material
+        return activity_translation  
 
-class Adapted_to_special_needs(db.Model):
+class Activity_didactic_strategy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    special_need_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    strategy_id = db.Column(db.Integer, db.ForeignKey('didactic_strategy.id'))
 
-class Publications(db.Model):
+class Didactic_strategy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    publication_title = db.Column(db.String(100), nullable=False)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    code = db.Column(db.String(255), nullable=False)
+    activity_didactic_strategy = db.relationship('Activity_didactic_strategy', backref='activity_didactic')
 
-class Languages(db.Model):
+class Activity_competence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    language_title = db.Column(db.String(100), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    competence_id = db.Column(db.Integer, db.ForeignKey('competence.id'))
+    
+    def to_dict(self):
+        activity_competence = {}
+        activity_competence['id'] = self.id
+        activity_competence['activity_id'] = self.activity_id
+        activity_competence['competence_id'] = self.competence_id
+
+        return activity_competence    
+
+class Competence(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(255), nullable=False)
+    activity_competence = db.relationship('Activity_competence', backref='act_competence')
+
+class Activity_special_need(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    special_need_id = db.Column(db.Integer, db.ForeignKey('special_need.id'))
+
+class Special_need(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(255), nullable=False)
+    activity_special_need = db.relationship('Activity_special_need', backref='activity_special_need')
+
+  

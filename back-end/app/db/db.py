@@ -1,35 +1,35 @@
 activities = [{"activity_title":"Make a kite", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 13, "target_age_group_right": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"}, 
+, "min_age": 13, "max_age": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"}, 
 {"activity_title":"Play Pictionary", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
 {"activity_title":"Sing the song", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 13, "target_age_group_right": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"},
+, "min_age": 13, "max_age": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"},
 {"activity_title":"Play pantomime", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
 {"activity_title":"Solve crossword", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Make lemonade", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Play Tic tac toe", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Make a train", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Watch the movie", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Tell a joke", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Make a pie", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Play battleship", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax2.jpg"},
 {"activity_title":"Do yoga together", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 13, "target_age_group_right": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"}, 
+, "min_age": 13, "max_age": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"}, 
 {"activity_title":"Play checkers", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"},
 {"activity_title":"Read the book", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 13, "target_age_group_right": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"},
+, "min_age": 13, "max_age": 17, "img_url": "https://cdn.quasar.dev/img/Make a kites.jpg"},
 {"activity_title":"Make family tree", "description":"Bla Bla Bla Bla bla bla bla bla bla bla bla bla bla bla bla bla"
-, "target_age_group_left": 6, "target_age_group_right": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"}
+, "min_age": 6, "max_age": 8, "img_url":"https://cdn.quasar.dev/img/parallax1.jpg"}
 ]
 
 emosocio_competencies = [
@@ -82,3 +82,4 @@ emosocio_competencies = [
     {"emosocio_competency_title" : "self-motivation", "activity_title" : "Make family tree"},
     {"emosocio_competency_title" : "influence", "activity_title" : "Make family tree"},
 ]
+

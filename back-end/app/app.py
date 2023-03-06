@@ -9,7 +9,7 @@
 
 from flask import Flask, request
 from flask_cors import CORS
-from models import db, Activity, EmoSocio_competencies
+from models import db, Activity, Activity_competence, Competence
 
 app = Flask(__name__)
 CORS(app)
@@ -46,7 +46,7 @@ def create_emosocio_competence():
           activity=(Activity.query.filter_by(activity_title=data["activity_title"])).first().to_dict()
           id = activity["id"]
           print(id)
-          new_emosocio_competency = EmoSocio_competencies(emosocio_competency_title=data["emosocio_competency_title"], activity_id=id)
+          new_emosocio_competency = Activity_competence(emosocio_competency_title=data["emosocio_competency_title"], activity_id=id)
           try:
             db.session.add(new_emosocio_competency)
             db.session.commit() 
@@ -56,7 +56,21 @@ def create_emosocio_competence():
         except:
             return "Error"         
     else:
-        return "Error"    
+        return "Error"
+
+@app.route('/create_competence', methods=['POST'])
+def create_competence():
+        if request.method=="POST":
+            data = request.json
+            new_competence = Competence(code=data['code'])
+            try:
+                db.session.add(new_competence)
+                db.session.commit() 
+                return {"code": new_competence.code}
+            except:
+                return "Error" 
+        else:
+            return "Error"
 
 @app.route('/get_activities', methods=['GET'])
 def get_activities():
@@ -66,7 +80,7 @@ def get_activities():
             activities_dict = []
             for activity in activities:
                 act_to_dict = activity.to_dict()
-                emoSocio_competencies=EmoSocio_competencies.query.filter(EmoSocio_competencies.activity_id==act_to_dict["id"]).all()
+                emoSocio_competencies=Activity_competence.query.filter(Activity_competence.activity_id==act_to_dict["id"]).all()
                 act_to_dict['emosocio_competences'] = [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]
                 activities_dict.append(act_to_dict)
             return activities_dict
@@ -80,7 +94,7 @@ def get_activity():
     if request.method=="GET":
         id = request.args.get('activity_id')
         activity=(Activity.query.filter_by(id=id)).first().to_dict()
-        emoSocio_competencies=EmoSocio_competencies.query.filter(EmoSocio_competencies.activity_id==id).all()
+        emoSocio_competencies=Activity_competence.query.filter(Activity_competence.activity_id==id).all()
         activity['emosocio_competences'] =  [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]  
         return activity 
     else:
