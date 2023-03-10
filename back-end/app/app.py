@@ -9,7 +9,7 @@
 
 from flask import Flask, request
 from flask_cors import CORS
-from models import db, Activity, Activity_competence, Competence
+from models import db, Activity, Activity_competence, Activity_translation, Competence
 
 app = Flask(__name__)
 CORS(app)
@@ -25,38 +25,34 @@ def index():
 def create_activity():
     if request.method=='POST':
         data = request.json
-        new_activity = Activity(data)   
+        new_activity = Activity(data['activity'])   
         try:
             db.session.add(new_activity)
              #print(new_activity) 
             db.session.commit()
-            #Activity.query.all() 
+            #Activity.query.all()
+            for activity_translation in data['activity_translations']:
+                activity_translation['activity_id'] = new_activity.id
+                new_activity_translation = Activity_translation(activity_translation)
+                try:
+                    db.session.add(new_activity_translation)
+                    db.session.commit()
+                except:
+                    return "Error"
+            for activity_competence_code in data['activity_competences']:
+                competence_id = (Competence.query.filter_by(code=activity_competence_code)).first().id
+                new_activity_competence = Activity_competence({"activity_id": new_activity.id, "competence_id": competence_id})
+                try:
+                    db.session.add(new_activity_competence)
+                    db.session.commit()
+                except:
+                    return "Error"
             return new_activity.to_dict()
         except:
             return "Error"    
     else:
         return "Error"
 
-@app.route('/create_emosocio_competence', methods=['POST'])
-def create_emosocio_competence():
-    if request.method=="POST":
-        data = request.json
-        print(data)
-        try:
-          activity=(Activity.query.filter_by(activity_title=data["activity_title"])).first().to_dict()
-          id = activity["id"]
-          print(id)
-          new_emosocio_competency = Activity_competence(emosocio_competency_title=data["emosocio_competency_title"], activity_id=id)
-          try:
-            db.session.add(new_emosocio_competency)
-            db.session.commit() 
-            return new_emosocio_competency.to_dict()
-          except:
-            return "Error"  
-        except:
-            return "Error"         
-    else:
-        return "Error"
 
 @app.route('/create_competence', methods=['POST'])
 def create_competence():
@@ -79,10 +75,16 @@ def get_activities():
             activities = Activity.query.all() 
             activities_dict = []
             for activity in activities:
-                act_to_dict = activity.to_dict()
-                emoSocio_competencies=Activity_competence.query.filter(Activity_competence.activity_id==act_to_dict["id"]).all()
-                act_to_dict['emosocio_competences'] = [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]
-                activities_dict.append(act_to_dict)
+                act = activity.to_dict()
+                act_competences=Activity_competence.query.filter(Activity_competence.activity_id==act["id"]).all()
+                
+                act_competences_codes = []
+                for act_competence in act_competences:
+                    act_competence_code = Competence.query.filter_by(id=act_competence.competence_id).first().code
+                    act_competences_codes.append(act_competence_code)
+                act_obj_transl = Activity_translation.query.filter(Activity_translation.activity_id==act["id"]).all()
+                act_transl = [x.to_dict() for x in act_obj_transl]
+                activities_dict.append({"activity": act, "activity_competences": act_competences_codes, "activity_translations": act_transl})
             return activities_dict
         except:
             return "Error"    
@@ -93,10 +95,16 @@ def get_activities():
 def get_activity():
     if request.method=="GET":
         id = request.args.get('activity_id')
-        activity=(Activity.query.filter_by(id=id)).first().to_dict()
-        emoSocio_competencies=Activity_competence.query.filter(Activity_competence.activity_id==id).all()
-        activity['emosocio_competences'] =  [x.to_dict()["emosocio_competency_title"] for x in emoSocio_competencies]  
-        return activity 
+        act=(Activity.query.filter_by(id=id)).first().to_dict()
+        act_competences=Activity_competence.query.filter(Activity_competence.activity_id==id).all()
+
+        act_competences_codes = []
+        for act_competence in act_competences:
+            act_competence_code = Competence.query.filter_by(id=act_competence.competence_id).first().code
+            act_competences_codes.append(act_competence_code)
+        act_obj_transl = Activity_translation.query.filter(Activity_translation.activity_id==act["id"]).all()
+        act_transl = [x.to_dict() for x in act_obj_transl]
+        return {"activity": act, "activity_competences": act_competences_codes, "activity_translations": act_transl} 
     else:
         return "Error"
 

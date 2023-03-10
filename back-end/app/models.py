@@ -77,6 +77,8 @@ class Activity_translation(db.Model):
     material = db.Column(db.String(255))
 
     def __init__(self, data):
+        if 'activity_id' in data:
+            self.activity_id = data['activity_id']
         if 'language_code' in data:
             self.language_code = data['language_code']
         if 'title' in data:
@@ -116,6 +118,12 @@ class Activity_competence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
     competence_id = db.Column(db.Integer, db.ForeignKey('competence.id'))
+    
+    def __init__(self, data):
+        if 'activity_id' in data:
+            self.activity_id = data['activity_id']
+        if 'competence_id' in data:
+            self.competence_id = data['competence_id']
     
     def to_dict(self):
         activity_competence = {}

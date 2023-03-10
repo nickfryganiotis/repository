@@ -37,13 +37,17 @@
             v-for="(act, index) in getIndices(ratingModel)
               .slice((n - 1) * 4, n * 4)
               .map((indx) => Object.values(data)[indx])"
-            :id="act['id']"
-            :title="act['activity_title']"
-            :target_age_group_left="act['target_age_group_left']"
-            :target_age_group_right="act['target_age_group_right']"
-            :ratingModel="ratingModel[act['id'] - 1]"
-            :responses="responses[act['id'] - 1]"
-            :emosocio_competences="act['emosocio_competences']"
+            :id="act['activity']['id']"
+            :title="
+              act['activity_translations'] !== undefined
+                ? act['activity_translations'][0]['title']
+                : undefined
+            "
+            :target_age_group_left="act['activity']['min_age']"
+            :target_age_group_right="act['activity']['max_age']"
+            :ratingModel="ratingModel[act['activity']['id'] - 1]"
+            :responses="responses[act['activity']['id'] - 1]"
+            :emosocio_competences="act['activity_competences']"
             :key="index"
           />
 
@@ -66,14 +70,18 @@
           v-else-if="status === 'success'"
           class="col-2"
           v-for="(act, index) in Object.values(data).slice((n - 1) * 4, n * 4)"
-          :id="act['id']"
-          :title="act['activity_title']"
-          :target_age_group_left="act['target_age_group_left']"
-          :target_age_group_right="act['target_age_group_right']"
+          :id="act['activity']['id']"
+          :title="
+            act['activity_translations'] !== undefined
+              ? act['activity_translations'][0]['title']
+              : undefined
+          "
+          :target_age_group_left="act['activity']['min_age']"
+          :target_age_group_right="act['activity']['max_age']"
           :key="index"
           :ratingModel="ratingModel[(n - 1) * 4 + index]"
           :responses="responses[(n - 1) * 4 + index]"
-          :emosocio_competences="act['emosocio_competences']"
+          :emosocio_competences="act['activity_competences']"
         />
         <div class="col-2"></div>
       </div>
