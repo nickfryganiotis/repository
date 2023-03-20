@@ -5,7 +5,7 @@
 
       <div class="col-5">
         <div class="text-h3 text-weight-regular">
-          {{ posts["activity_title"] }}
+          {{ posts["title"] }}
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
           <q-card-section
             ><div class="text-h5 text-weight regular">EmoSocio Competences</div>
             <div class="text-negative q-mt-sm">
-              {{ posts["emosocio_competences"].join(", ") }}
+              {{ posts["activity_competences"].join(", ") }}
             </div>
           </q-card-section>
           <q-card-section>
@@ -39,7 +39,7 @@
             ><div class="text-h5 text-weight regular">Age target group</div>
             <div class="q-mt-sm">
               {{
-                `${posts["target_age_group_left"]} - ${posts["target_age_group_right"]} years old`
+                `${posts["activity"]["min_age"]} - ${posts["activity"]["max_age"]} years old`
               }}
             </div>
           </q-card-section>
