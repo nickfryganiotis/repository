@@ -1,4 +1,4 @@
-export const emo_comp_defs = {
+export const competencesDefinitions = {
   "self-awareness":
     "Understand our own emotions and the effects they have on us.",
   "emotional regulation":

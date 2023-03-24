@@ -27,27 +27,25 @@
         :name="n"
         class="column no-wrap"
       >
-        <div
-          class="q-pt-md row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-        >
+        <div class="q-pt-md row fit q-gutter-xs q-col-gutter no-wrap">
           <div class="col-2"></div>
 
           <ActivityCard
             class="col-2"
-            v-for="(act, index) in getIndices(ratingModel)
+            v-for="(activity, index) in getIndices(ratingModel)
               .slice((n - 1) * 4, n * 4)
               .map((indx) => Object.values(data)[indx])"
-            :id="act['activity']['id']"
+            :id="activity['activity']['id']"
             :title="
-              act['activity_translations'] !== undefined
-                ? act['activity_translations'][0]['title']
+              activity['activity_translations'] !== undefined
+                ? activity['activity_translations'][0]['title']
                 : undefined
             "
-            :target_age_group_left="act['activity']['min_age']"
-            :target_age_group_right="act['activity']['max_age']"
-            :ratingModel="ratingModel[act['activity']['id'] - 1]"
-            :responses="responses[act['activity']['id'] - 1]"
-            :emosocio_competences="act['activity_competences']"
+            :minAge="activity['activity']['min_age']"
+            :maxAge="activity['activity']['max_age']"
+            :ratingModel="ratingModel[activity['activity']['id'] - 1]"
+            :responses="responses[activity['activity']['id'] - 1]"
+            :activityCompetences="activity['activity_competences']"
             :key="index"
           />
 
@@ -61,27 +59,28 @@
       <div class="col text-h5 text-weight-regular">All activities</div>
     </div>
     <div v-for="n in counter" :key="n">
-      <div
-        class="q-pt-xl row fit items-center q-gutter-xs q-col-gutter no-wrap"
-      >
+      <div class="q-pt-xl row fit q-gutter-xs q-col-gutter no-wrap">
         <div class="col-2"></div>
         <div v-if="status === 'loading'">Loading...</div>
         <ActivityCard
           v-else-if="status === 'success'"
           class="col-2"
-          v-for="(act, index) in Object.values(data).slice((n - 1) * 4, n * 4)"
-          :id="act['activity']['id']"
+          v-for="(activity, index) in Object.values(data).slice(
+            (n - 1) * 4,
+            n * 4
+          )"
+          :id="activity['activity']['id']"
           :title="
-            act['activity_translations'] !== undefined
-              ? act['activity_translations'][0]['title']
+            activity['activity_translations'] !== undefined
+              ? activity['activity_translations'][0]['title']
               : undefined
           "
-          :target_age_group_left="act['activity']['min_age']"
-          :target_age_group_right="act['activity']['max_age']"
+          :minAge="activity['activity']['min_age']"
+          :maxAge="activity['activity']['max_age']"
           :key="index"
           :ratingModel="ratingModel[(n - 1) * 4 + index]"
           :responses="responses[(n - 1) * 4 + index]"
-          :emosocio_competences="act['activity_competences']"
+          :activityCompetences="activity['activity_competences']"
         />
         <div class="col-2"></div>
       </div>
@@ -108,7 +107,7 @@
 import { defineComponent, ref } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
 import { useRouter, useRoute } from "vue-router";
-import axios from "axios";
+import { getActivities } from "src/hooks/getActivities";
 import { useQuery } from "vue-query";
 
 export default defineComponent({
@@ -134,16 +133,7 @@ export default defineComponent({
       return indices;
     }
 
-    const { status, data, error } = useQuery("getActivities", () =>
-      axios
-        .get("http://localhost:5000/get_activities")
-        .then((resp) => {
-          return resp.data;
-        })
-        .catch((error) => {
-          return error;
-        })
-    );
+    const { status, data, error } = useQuery("getActivities", getActivities);
 
     return {
       slide: ref(1),

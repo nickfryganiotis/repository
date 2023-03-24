@@ -37,6 +37,8 @@
           label="Search for an activity"
           @click="goToSearchActivityPage"
         />
+
+        <MenuBtn label="Competences" @click="goToViewCompetences" />
       </q-toolbar>
     </q-header>
 
@@ -52,7 +54,6 @@
 import { defineComponent, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import MenuBtn from "../components/MenuBtn";
-import { fabPython } from "@quasar/extras/fontawesome-v6";
 
 export default defineComponent({
   name: "MainLayout",
@@ -80,11 +81,13 @@ export default defineComponent({
     const goToCreateActivityPage = () => {
       push("/create_activity");
     };
+    const goToViewCompetences = () => {
+      push("/competences");
+    };
 
     return {
       leftDrawerOpen,
       secondaryMenu,
-      fabPython,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
@@ -92,6 +95,7 @@ export default defineComponent({
       goToLandingPage,
       goToSearchActivityPage,
       goToCreateActivityPage,
+      goToViewCompetences,
     };
   },
 });

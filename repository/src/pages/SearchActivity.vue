@@ -141,22 +141,22 @@
           <ActivityCard
             v-else-if="status === 'success'"
             class="col-4"
-            v-for="(act, index) in Object.values(data).slice(
+            v-for="(activity, index) in Object.values(data).slice(
               (n - 1) * 3,
               n * 3
             )"
-            :id="act['activity']['id']"
+            :id="activity['activity']['id']"
             :title="
-              act['activity_translations'] !== undefined
-                ? act['activity_translations'][0]['title']
+              activity['activity_translations'] !== undefined
+                ? activity['activity_translations'][0]['title']
                 : undefined
             "
-            :target_age_group_left="act['activity']['min_age']"
-            :target_age_group_right="act['activity']['max_age']"
+            :minAge="activity['activity']['min_age']"
+            :maxAge="activity['activity']['max_age']"
             :key="index"
             :ratingModel="ratingModel[(n - 1) * 3 + index]"
             :responses="responses[(n - 1) * 3 + index]"
-            :emosocio_competences="act['activity_competences']"
+            :activityCompetences="activity['activity_competences']"
           />
         </div>
       </div>
@@ -167,7 +167,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import ActivityCard from "src/components/ActivityCard.vue";
-import axios from "axios";
+import { getActivities } from "src/hooks/getActivities";
 import { useQuery } from "vue-query";
 
 export default defineComponent({
@@ -175,16 +175,7 @@ export default defineComponent({
     ActivityCard,
   },
   setup() {
-    const { status, data, error } = useQuery("getActivities", () =>
-      axios
-        .get("http://localhost:5000/get_activities")
-        .then((resp) => {
-          return resp.data;
-        })
-        .catch((error) => {
-          return error;
-        })
-    );
+    const { status, data, error } = useQuery("getActivities", getActivities);
     return {
       ph: ref(""),
       checkboxes: ref({

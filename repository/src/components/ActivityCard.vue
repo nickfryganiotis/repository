@@ -22,26 +22,28 @@
         {{ `${responses} responses` }}
       </div>
       <div class="q-pt-xs">
-        {{ `${target_age_group_left} - ${target_age_group_right} years old` }}
+        {{ `${minAge} - ${maxAge} years old` }}
       </div>
       <div class="row q-pt-xs text-negative">
         <div
-          v-for="(emo_comp, index) in emosocio_competences"
+          v-for="(activityCompetence, index) in activityCompetences"
           :key="index"
           @click="getActivityDefinition($event)"
         >
-          {{ `${emo_comp},` }}
+          {{ `${activityCompetence},` }}
         </div>
       </div>
     </q-card-section>
     <q-dialog v-model="popup">
       <q-card>
         <q-card-section>
-          <div class="text-h6">{{ act_name }}</div>
+          <div class="q-pl-sm text-h6 bg-primary text-white">
+            {{ activityName }}
+          </div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          {{ act_def }}
+          {{ activityDefinition }}
         </q-card-section>
 
         <q-card-actions align="right">
@@ -55,31 +57,31 @@
 <script>
 /* used value instead of v-model as i cannot mutate it*/
 import { defineComponent, ref } from "vue";
-import { emo_comp_defs } from "src/texts/emosocio_competences";
+import { competencesDefinitions } from "src/texts/emosocio_competences";
 
 export default defineComponent({
   name: "ActivityCard",
   props: {
     id: { type: Number },
     title: { type: String },
-    target_age_group_left: { type: Number },
-    target_age_group_right: { type: Number },
+    minAge: { type: Number },
+    maxAge: { type: Number },
     ratingModel: { type: Number },
     responses: { type: Number },
-    emosocio_competences: { type: Array },
+    activityCompetences: { type: Array },
   },
 
   setup(props) {
     const popup = ref(false);
-    const act_name = ref("");
-    const act_def = ref("");
+    const activityName = ref("");
+    const activityDefinition = ref("");
     const getActivityDefinition = (e) => {
       console.log(e.target.textContent.slice(0, -1));
-      act_name.value = e.target.textContent.slice(0, -1);
-      act_def.value = emo_comp_defs[act_name.value];
+      activityName.value = e.target.textContent.slice(0, -1);
+      activityDefinition.value = competencesDefinitions[activityName.value];
       popup.value = true;
     };
-    return { getActivityDefinition, popup, act_def, act_name };
+    return { getActivityDefinition, popup, activityDefinition, activityName };
   },
 });
 </script>

@@ -221,3 +221,8 @@ short activity description button 21/02/2023
           />
           <div class="col-2"></div>
         </div>
+
+
+q-pt-xl row fit items-center q-gutter-xs q-col-gutter no-wrap "class for all activities homepage"
+
+fit justify-start items-center q-gutter-xs q-col-gutter no-wrap "class for carousel activities homepage"

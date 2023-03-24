@@ -25,6 +25,10 @@ const routes = [
         path: "/contact_page",
         component: () => import("pages/ContactPage.vue"),
       },
+      {
+        path: "/competences",
+        component: () => import("pages/CompetencesDefinitions.vue"),
+      },
     ],
   },
 
