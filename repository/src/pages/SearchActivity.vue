@@ -175,7 +175,9 @@ export default defineComponent({
     ActivityCard,
   },
   setup() {
-    const { status, data, error } = useQuery("getActivities", getActivities);
+    const { status, data, error } = useQuery("getActivities", getActivities, {
+      refetchOnMount: false,
+    });
     return {
       ph: ref(""),
       checkboxes: ref({

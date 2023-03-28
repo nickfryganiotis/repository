@@ -29,6 +29,10 @@ const routes = [
         path: "/competences",
         component: () => import("pages/CompetencesDefinitions.vue"),
       },
+      {
+        path: "/strategies",
+        component: () => import("pages/DidacticStrategies.vue"),
+      },
     ],
   },
 

@@ -133,7 +133,9 @@ export default defineComponent({
       return indices;
     }
 
-    const { status, data, error } = useQuery("getActivities", getActivities);
+    const { status, data, error } = useQuery("getActivities", getActivities, {
+      refetchOnMount: false,
+    });
 
     return {
       slide: ref(1),

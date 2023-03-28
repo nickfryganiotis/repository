@@ -39,6 +39,7 @@
         />
 
         <MenuBtn label="Competences" @click="goToViewCompetences" />
+        <MenuBtn label="Didactic strategies" @click="goToViewStrategies" />
       </q-toolbar>
     </q-header>
 
@@ -47,6 +48,7 @@
 
       <router-view />
     </q-page-container>
+    <AppFooter />
   </q-layout>
 </template>
 
@@ -54,12 +56,14 @@
 import { defineComponent, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import MenuBtn from "../components/MenuBtn";
+import AppFooter from "./AppFouter";
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
     MenuBtn,
+    AppFooter,
   },
 
   setup() {
@@ -84,6 +88,9 @@ export default defineComponent({
     const goToViewCompetences = () => {
       push("/competences");
     };
+    const goToViewStrategies = () => {
+      push("/strategies");
+    };
 
     return {
       leftDrawerOpen,
@@ -96,6 +103,7 @@ export default defineComponent({
       goToSearchActivityPage,
       goToCreateActivityPage,
       goToViewCompetences,
+      goToViewStrategies,
     };
   },
 });
